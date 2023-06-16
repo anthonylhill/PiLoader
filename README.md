@@ -21,18 +21,19 @@ And the best part is that it's all 100% accessible via WiFi from any PC or lapto
 <ol>
 <li>Create 1802 programs, edit, assemble, and load to MC's 1802 memory entirely over Wifi</li>
 <li>Programs loaded to 1802 memory via DMA and override of the MC front panel switches</li>
-<li>PiZero can start, halt, or reset 1802 in addition to loading code to memory. 
+<li>PiZero can start, halt, or reset 1802 in addition to loading code to memory.</li>
 <li>Intercepts the 1802's interrupt signal from the front panel when PiZero is in control so that front panel interrupts from LED MUX circuit don't disrupt downloads.</li>
 <li>Serial console interface for terminal I/O between PiZero and 1802 via Q & EF3 to PiZero's UART GPIO pins (with PiZero running minicom)</li>
 <li>Able to read parallel output from 1802 to MC Front Panel for debugging or for high speed data exchange between PiZero&1802 in conjunction with switch overrides</li>
 <li>Prototype interconnect area with connections for three uncommitted PiZero GPIO pins and the 1802 ef1, ef2, & interrupt pins (plus 5v , 3.3v, & GND)</li>
 <li>Jumpers to short the MWR and RUN connections from front panel.</li>
-<li>Power, USB, HDMI, and composite video available via accessible PiZero connectors on rear of stack</li>
+<li>Power, USB, and HDMI video available via accessible PiZero connectors on rear of stack</li>
+<li>Composite video available with a soldered connection to the PiZero</li>
 <li>Power both MC and PiZero via a single USB wall wart</li>
 <li>Maintains MC's all-in-one compact form factor (requires extension ring to fit into Altoids tin)</li>
 <li>Works with either version of MC front panel. Or without any front panel</li>
 <li>Safely manages 3.3v to 5v to 3.3v level conversions as needed</li>
-<li>Ground connection post for scope or logic probe.
+<li>Ground connection post for scope or logic probe.</li>
 <li>PiZero utility written in C to load program code to 1802</li>
 </ol>
 
