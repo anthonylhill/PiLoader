@@ -37,6 +37,7 @@ And the best part is that it's all 100% accessible via WiFi from any PC or lapto
 <li>PiZero utility written in C to load program code to 1802</li>
 </ol>
 
+###link > [Schematic](schematic.pdf)
 
 ### Bare PCB
 ![Bare PCB](photos/PCB.jpg "Bare PCB")
@@ -56,7 +57,7 @@ And the best part is that it's all 100% accessible via WiFi from any PC or lapto
     </tr>
 </table>
 
-link > [Schematic](schematic.pdf)
+
 
 <B>Tags</B> : eclectic retro mishmash fusion retro-futurism anachronism CDP1802
 
