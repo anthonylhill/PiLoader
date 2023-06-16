@@ -64,7 +64,7 @@ And the best part is that it's all 100% accessible via WiFi from any PC or lapto
     </tr>
 </table>
 
-
+Note : to order your own board send the gerber zip file directly to [ https://jlcpcb.com/ ](JCLPCB)
 
 <B>Tags</B> : eclectic retro mishmash fusion retro-futurism anachronism CDP1802
 
