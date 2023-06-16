@@ -4,8 +4,9 @@
 // 1802 Membership Card Program Loader -   Revision 3.0
 //
 //  - for PiLoader4 PCB
-//  - released under GPL-3.0 license
 //  - works with either native file mode access,  the PIGPIO library, or Wiring Pi (future)
+//
+//  Released under terms of the GPL-3.0 license
 //
 //***********************************************************
 
