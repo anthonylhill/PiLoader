@@ -39,6 +39,10 @@ And the best part is that it's all 100% accessible via WiFi from any PC or lapto
 ### Development Environment
 ![Development Environment](Photos/screenshot.jpg)
 
+### Local Terminal Mode
+![Local ](Photos/localmode.jpg)
+
+
 ### link > [PiLoader Schematic](schematic.pdf)
 
 ### Bare PCB
