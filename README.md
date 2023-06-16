@@ -36,6 +36,8 @@ And the best part is that it's all 100% accessible via WiFi from any PC or lapto
 <li>PiZero utility written in C to load program code to 1802</li>
 </ol>
 
+#### Note : to order your own board send the gerber zip file directly to [ https://jlcpcb.com/ ](JCLPCB)
+
 ### Development Environment
 ![Development Environment](Photos/screenshot.jpg)
 
