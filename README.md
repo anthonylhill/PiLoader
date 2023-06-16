@@ -42,7 +42,7 @@ And the best part is that it's all 100% accessible via WiFi from any PC or lapto
 ![Bare PCB](photos/PCB.jpg "Bare PCB")
 
 
-### anthonylhill.github.io
+
 
 <table> 
     <tr>
@@ -56,6 +56,8 @@ And the best part is that it's all 100% accessible via WiFi from any PC or lapto
     </tr>
 </table>
 
-[ Schematic ](schematic.pdf)
+link > [Schematic](schematic.pdf)
 
 <B>Tags</B> : eclectic retro mishmash fusion retro-futurism anachronism CDP1802
+
+### Project Web Page :  [ http://anthonylhill.github.io ](http://anthonylhill.github.io)
