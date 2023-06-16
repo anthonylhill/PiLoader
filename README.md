@@ -21,7 +21,7 @@ And the best part is that it's all 100% accessible via WiFi from any PC or lapto
 <ol>
 <li>Create 1802 programs, edit, assemble, and load to MC's 1802 memory entirely over Wifi</li>
 <li>Programs loaded to 1802 memory via DMA and override of the MC front panel switches</li>
-<li>PiZero can start, halt, or reset 1802. 
+<li>PiZero can start, halt, or reset 1802 in addition to loading code to memory. 
 <li>Intercepts the 1802 interrupt signal from the front panel when PiZero is in control so that front panel interrupts from LED MUX circuit don't disrupt downloads.</li>
 <li>Serial console interface for terminal I/O between PiZero and 1802 via Q & EF3 to PiZero's UART GPIO pins (with PiZero running minicom)</li>
 <li>Able to read parallel output from 1802 to MC Front Panel for debugging or high speed data PiZero/1802 exchange in conjunction with switch overrides</li>
