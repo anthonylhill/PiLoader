@@ -1,0 +1,5 @@
+# Machine-generated file - use setup menu in minicom to change parameters.
+pu port             /dev/ttyS0
+pu baudrate         19200
+pu hasdcd           No
+pu rtscts           No
