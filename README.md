@@ -36,7 +36,7 @@ And the best part is that it's all 100% accessible via WiFi from any PC or lapto
 <li>PiZero utility written in C to load program code to 1802</li>
 </ol>
 
-![Development Environment](photos/screenshot.jpg "Development")
+![Development Environment](photos/screenshot.png "Development")
 
 ### link > [PiLoader Schematic](schematic.pdf)
 
