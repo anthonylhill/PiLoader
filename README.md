@@ -19,7 +19,7 @@ And the best part is that it's all 100% accessible via WiFi from any PC or lapto
 
 ## Features
 <ol>
-<li>Create programs, edit, assemble, and load to MC's memory entirely over Wifi</li>
+<li>Create 1802 programs, edit, assemble, and load to MC's 1802 memory entirely over Wifi</li>
 <li>Programs loaded to 1802 memory via DMA and override of the MC front panel switches</li>
 <li>PiZero can start, halt, or reset 1802. 
 <li>Intercepts the 1802 interrupt signal from the front panel when PiZero is in control so that front panel interrupts from LED MUX circuit don't disrupt downloads.</li>
@@ -33,7 +33,6 @@ And the best part is that it's all 100% accessible via WiFi from any PC or lapto
 <li>Works with either version of MC front panel. Or without any front panel</li>
 <li>Safely manages 3.3v to 5v to 3.3v level conversions as needed</li>
 <li>Ground connection post for scope or logic probe.
-<li>Develop software on the PiZero with editor and assembler (e.g. A18) over Wifi and then load/run code on MC's 1802
 <li>PiZero utility written in C to load program code to 1802</li>
 </ol>
 
