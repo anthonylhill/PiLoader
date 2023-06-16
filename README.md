@@ -45,7 +45,8 @@ And the best part is that it's all 100% accessible via WiFi from any PC or lapto
 ![Bare PCB](Photos/PCB.jpg "Bare PCB")
 
 
-
+### Top View without Front Panel
+![Top View](Photos/TopView.jpg "Top View")
 
 <table> 
     <tr>
