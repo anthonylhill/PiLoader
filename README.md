@@ -3,19 +3,19 @@
 There is a lot to like about [Lee Hart’s Membership Card](http://www.sunrise-ev.com/1802.htm "Click this link") (MC). It comes in a compact attractive form factor supporting a 4 MHz 1802, up to 64K of RAM, serial I/O, and lots of switches and blinkenzee lights.  Supplied in kit format, it’s a fun build with an amazing amount of documentation, not to mention Lee Hart’s personal support to help you get things running if you have trouble.
 
 ### Front View with PiZero Adapter in the Card Stack
-![Front View](photos/Front.jpg)
+![Front View](Photos/Front.jpg)
 
 Having said all that, after a few months of usage I felt like there was a little more needed if I was going to do any serious programming with the MC.  Toggling in programs with the front panel switches starts out fun but gets old fast.  Programming EEPROMs is a slow process and they cut into the 64K of available RAM.  Adding serial program download capability to a monitor program is a viable option but requires either an EPROM or a fairly long manual program load via switches.   The earlier MC models had a DB25 connector that could be hooked up to an old school printer port (or GPIO on a microcontroller) but that usually meant an ugly ribbon cable with limited distance cluttering up your workspace.  And the release of the new MC front panel card meant the DB25 went away in favour of six 7 segment LED’s.
 
 ### Side View Showing USB Power Connection to Raspberry Pi Running the Card Stack
-![Side View](photos/Side.jpg "Side View")
+![Side View](Photos/Side.jpg "Side View")
 
 So I’ve designed and built a PCB Raspberry PiZero W loader card that’s format compatible with the MC and  inserts in the middle of the Membership card’s two card stack.  That maintains the look and feel of the MC while allowing just a thin 5V power cable as the only hookup to the MC.  The built-in Pi Zero contains my complete 1802 development environment (editor & A18 & source files) interfaced with a few simple scripts to the 1802 itself. 
 
 And the best part is that it's all 100% accessible via WiFi from any PC or laptop running SSH. Alternatively you can attach a USB keyboard and HDMI (or composite video monitor) for local programming and control.
 
 ### Running Without Front Panel
-![CPU Card Only](photos/CPUonly.jpg "CPU Card Only")
+![CPU Card Only](Photos/CPUonly.jpg "CPU Card Only")
 
 ## Features
 <ol>
@@ -36,12 +36,12 @@ And the best part is that it's all 100% accessible via WiFi from any PC or lapto
 <li>PiZero utility written in C to load program code to 1802</li>
 </ol>
 
-![Development Environment](photos/screenshot.jpg "Development")
+![Development Environment](Photos/screenshot.jpg "Development")
 
 ### link > [PiLoader Schematic](schematic.pdf)
 
 ### Bare PCB
-![Bare PCB](photos/PCB.jpg "Bare PCB")
+![Bare PCB](Photos/PCB.jpg "Bare PCB")
 
 
 
