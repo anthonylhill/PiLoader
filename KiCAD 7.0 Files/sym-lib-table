@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "1 - PiZero Loader V4")(type "KiCad")(uri "${KIPRJMOD}/PiZero Loader V4.kicad_sym")(options "")(descr "local symbols for PiZero Loader"))
+)
