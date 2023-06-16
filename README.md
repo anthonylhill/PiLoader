@@ -12,7 +12,7 @@ Having said all that, after a few months of usage I felt like there was a little
 
 So I’ve designed and built a PCB Raspberry PiZero W loader card that’s format compatible with the MC and  inserts in the middle of the Membership card’s two card stack.  That maintains the look and feel of the MC while allowing just a thin 5V power cable as the only hookup to the MC.  The built-in Pi Zero contains my complete 1802 development environment (editor & A18 & source files) interfaced with a few simple scripts to the 1802 itself. 
 
-And the best part is that it's all 100% accessible via WiFi from any PC or laptop running SSH. Alternatively you can attach a USB keyboard and HDMI (or composite video monitor) for local programming and control.
+And the best part is that it's all 100% accessible via WiFi from any PC or laptop running SSH. Alternatively you can attach a USB keyboard and HDMI (or composite video monitor) for local programming and control and even a GUI based environment.  Of course the GUI option could be used remotely over X or via VNC.
 
 ### Running Without Front Panel
 ![CPU Card Only](Photos/CPUonly.jpg "CPU Card Only")
