@@ -46,7 +46,7 @@ And the best part is that it's all 100% accessible via WiFi from any PC or lapto
 
 <table> 
     <tr>
-        <td>1802</td><td>4 MHz</td>
+        <td>1802</td><td>1.8 or 4 MHz</td>
     </tr>
     <tr>
         <td>Raspberry Pi</td><td>Wifi HDMI USB</td>
