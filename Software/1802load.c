@@ -1,8 +1,20 @@
+
 //***********************************************************
-// 1802 Program Loader -   Revision 3.0
+//
+// 1802 Membership Card Program Loader -   Revision 3.0
+//
 //  - for PiLoader4 PCB
 //  - released under GPL-3.0 license
+//  - works with either native file mode access,  the PIGPIO library, or Wiring Pi (future)
+//
 //***********************************************************
+
+// TODO
+// =====
+//   - implement Wiring Pi version of GPIO control
+//   - allow a command line option to load at a nonzero address
+//   - allow loading from Intel HEX format files 
+//
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,7 +22,6 @@
 #include <unistd.h>
 
 #include "loader_gpio.h"
-
 
 
 //** Define which Raspberry Pi GPIO access method to use
@@ -36,10 +47,19 @@
 #define GDELAY( USEC ) gpioDelay( USEC )
 #endif
 
+// a short delay between bytes loaded - should be possible to reduce this for large files
+
 #define DELAY 50
+
+// bit mask for byte to GPIO bit I/O
 
 unsigned char mask[] = { 0x01 , 0x02 , 0x04 , 0x08 , 0x10 , 0x20 , 0x40 , 0x80 } ;
 
+//=================================================================================================
+//
+// Program Start
+//
+//=================================================================================================
 
 int main( int argc, char *argv[])
 {
@@ -77,6 +97,8 @@ int main( int argc, char *argv[])
     int elements = sizeof(pins)/sizeof(pins[0]) ;
     printf("\n elements = %d\n", elements ) ;
     printf("\n Loading %s\n[ ", argv[1]);
+
+// FIXME : need to implement Wiring Pi I/O code here
 
 #if GPIO_METHOD == FS_ACCESS
     pin_t pin_state[ sizeof(pins)/sizeof(pins[0]) ] ;
