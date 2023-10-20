@@ -19,17 +19,17 @@ usage :   sudo 1802load <filename>    where filename is a binary file to be load
 
  GPIO Interface Methods :
 -selected at compile time via #define GPIO_METHOD
+- currently only pigpio is completely supported and tested. Use the others with care.
 
-1) sysfs interface    https://www.ics.com/blog/gpio-programming-using-sysfs-interface
+1) pigpio      https://abyz.me.uk/rpi/pigpio/
+               https://www.ics.com/blog/gpio-programming-exploring-libgpiod-library
+
+2) sysfs interface    https://www.ics.com/blog/gpio-programming-using-sysfs-interface
                       https://elinux.org/RPi_GPIO_Code_Samples#sysfs
 	- no special dependencies
 	- uses include file loader_util.h
 
-2) WiringPI   http://wiringpi.com/
-	
-3) pigpio      https://abyz.me.uk/rpi/pigpio/
-               https://www.ics.com/blog/gpio-programming-exploring-libgpiod-library
-
+3) WiringPI   http://wiringpi.com/
 
 4) Direct Register Access (no implemented)  https://elinux.org/RPi_GPIO_Code_Samples#Direct_register_access
 
