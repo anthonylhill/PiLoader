@@ -73,7 +73,7 @@ int main( int argc, char *argv[])
 
 #if GPIO_METHOD == FS_ACCESS
     printf("\n 1802 Loader : File System Version ") ;
-#elseif GPIO_METHOD == PIGPIO
+#elif GPIO_METHOD == PIGPIO
     printf("\n 1802 Loader : PIGPIO Version ") ;
 #else
     printf("\n 1802 Loader : WIRING_PI Version ") ;	
@@ -111,7 +111,7 @@ int main( int argc, char *argv[])
         printf("%d ", pin);
         pin_state[pin] = pinopen( pins[pin], OUTPUT); // set all used pins as an outputs
     }
-#elseif GPIO_METHOD == PIGPIO	
+#elif GPIO_METHOD == PIGPIO	
 
     if (gpioInitialise() < 0 )
     {
@@ -199,7 +199,7 @@ int main( int argc, char *argv[])
     {
         pinclose( pin_state[pin]); // all done with this pin
     }
-#elseif GPIO_METHOD == PIGPIO
+#elif GPIO_METHOD == PIGPIO
     gpioTerminate();
 #else
 		// TODO : add WiringPi code here 
