@@ -30,6 +30,7 @@
 #define FS_ACCESS 1
 #define PIGPIO    2
 #define WIRING_PI 3
+
 //#define GPIO_METHOD FS_ACCESS
 #define GPIO_METHOD PIGPIO
 //#define GPIO_METHOD WIRING_PI
@@ -71,17 +72,18 @@ int main( int argc, char *argv[])
    unsigned char value ;
 
 #if GPIO_METHOD == FS_ACCESS
-    printf("\n 1802 Loader : File System Version") ;
+    printf("\n 1802 Loader : File System Version ") ;
+#elseif GPIO_METHOD == PIGPIO
+    printf("\n 1802 Loader : PIGPIO Version ") ;
 #else
-    printf("\n 1802 Loader : PIGPIO Version") ;
-
+    printf("\n 1802 Loader : WIRING_PI Version ") ;	
 #endif
 
     // check for command line parameters
 
     if ( argc <2 )
     {
-       printf("Error : filename needed.\n");
+       printf("\nError : filename needed.\n");
        exit(1) ;
     }
 
@@ -89,7 +91,7 @@ int main( int argc, char *argv[])
 
     if (!fptr)
     {
-        printf("Error : unable to open file %s \n", argv[1] );
+        printf("\nError : unable to open file %s \n", argv[1] );
         exit(1) ;
     }
 
@@ -99,7 +101,7 @@ int main( int argc, char *argv[])
     printf("\n elements = %d\n", elements ) ;
     printf("\n Loading %s\n[ ", argv[1]);
 
-// FIXME : need to implement Wiring Pi I/O code here
+
 
 #if GPIO_METHOD == FS_ACCESS
     pin_t pin_state[ sizeof(pins)/sizeof(pins[0]) ] ;
@@ -109,7 +111,8 @@ int main( int argc, char *argv[])
         printf("%d ", pin);
         pin_state[pin] = pinopen( pins[pin], OUTPUT); // set all used pins as an outputs
     }
-#else
+#elseif GPIO_METHOD == PIGPIO	
+
     if (gpioInitialise() < 0 )
     {
         printf("\nERROR :  unable to initialize GPIO access\n");
@@ -121,6 +124,11 @@ int main( int argc, char *argv[])
         gpioSetMode( pins[pin], PI_OUTPUT );       // set GPIO as output
         gpioSetPullUpDown(pins[pin], PI_PUD_UP );  // set internal resistor to pull up mode
     }
+	
+#else
+// FIXME : need to implement Wiring Pi I/O code here
+	   printf("\Warning : Wiring Pi gpio access not current supported.\n");
+       exit(1) ;
 #endif
 
     printf(" ]\n");
@@ -191,8 +199,10 @@ int main( int argc, char *argv[])
     {
         pinclose( pin_state[pin]); // all done with this pin
     }
-#else
+#elseif GPIO_METHOD == PIGPIO
     gpioTerminate();
+#else
+		// TODO : add WiringPi code here 
 #endif
 
 }
