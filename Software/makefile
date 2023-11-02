@@ -1,7 +1,7 @@
 
 # make file for 1802 Membership Card PiZero Loader programs
 
-all: 1802load 1802scan gpio_set gpio_get 1802scan 6digitDisplay idiotX0 qblink idle bbserial serial_test   
+all: 1802load 1802scan gpio_set gpio_get 1802scan 6digitDisplay qblink idle bbserial serial_test   
 
 # =====  C Programs for Pi Loader =====
 
