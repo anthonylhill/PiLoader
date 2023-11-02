@@ -3,6 +3,9 @@
 
 all: 1802load 1802scan gpio_set gpio_get 6digitDisplay qblink idle bbserial serial_test 
 
+clean:
+	rm -f *.lst
+	touch *.c *.asm *.h	
 
 # =====  C Programs for Pi Loader =====
 
