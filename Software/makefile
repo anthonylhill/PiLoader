@@ -1,7 +1,11 @@
 
-# make file for 1802 Membership Card PiZero Loader programs
+# insert tab in insert mode by pressing <Ctrl> + v and then <Tab>
 
-all: 1802load 1802scan gpio_set gpio_get 1802scan 6digitDisplay qblink idle bbserial serial_test   
+# all: 1802setup serial_tx load_program serial_echo readQ \
+#     test18.bin 1802_bit_bang_serial.bin serial_test.bin
+
+all: 1802load 1802scan gpio_set gpio_get mtest2 in_out 6digitDisplay qblink idle bbserial serial_test 
+
 
 # =====  C Programs for Pi Loader =====
 
@@ -22,11 +26,11 @@ gpio_get:  gpio_get.c loader_utils.h loader_gpio.h
 mtest2:  mtest2.asm
 	./a18/a18 mtest2.asm -L mtest2.lst -b mtest2
 
+in_out:  in_out.asm
+	./a18/a18 in_out.asm -L in_out.lst -b in_out
+
 6digitDisplay:  6digitDisplay.asm
 	./a18/a18 6digitDisplay.asm -L 6digitDisplay.lst -b 6digitDisplay
-
-idiotX0:  idiotX0.asm
-	./a18/a18 idiotX0.asm -L idiotX0.lst -b idiotX0
 
 qblink:  qblink.asm
 	./a18/a18 qblink.asm -L qblink.lst -b qblink

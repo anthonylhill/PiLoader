@@ -1,20 +1,6 @@
-//***********************************************************
-//
-// 1802 Membership Card Scanner for 1802 Parrallel Port Output  Revision `1.0
-//
-//  - for PiLoader4 PCB
-//  - released under GPL-3.0 license
-//  - works with PIGPIO library
-// 
-//  Released under terms of the GPL-3.0 license
-//
-//***********************************************************
 
-// TODO
-// =====
-//   - implement Wiring Pi and native file access version of GPIO control
-//   - figure out how to sync with start of 6 digit scan (might need hardware mod to monitor EF2)
-//
+/// Scanner for  1802 Parrallel Port Output
+//  - for PiLoader4 PCB
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -55,7 +41,7 @@ int main( int argc, char *argv[])
 		exit(1) ;
 	}
 	
-	printf("\nShift Register Data :");
+	    printf("\nShift Register Data :");
 	
 		gpioSetMode(       shift_register_load,  PI_OUTPUT );  // set GPIO as output
 		gpioSetPullUpDown( shift_register_load,  PI_PUD_UP );  // set internal resistor to pull up mode
@@ -63,13 +49,10 @@ int main( int argc, char *argv[])
 		gpioSetPullUpDown( shift_register_clock, PI_PUD_UP );  // set internal resistor to pull up mode
 
 		gpioSetMode(       shift_register_data, PI_INPUT );  // set GPIO as input
-//		gpioSetPullUpDown( shift_register_data, PI_PUD_OFF );  // set internal resistor off
 
     // set control pins to required default state
-
     	gpioWrite( shift_register_load, HIGH); // shift register load pin = HIGH
     	gpioWrite( shift_register_clock, LOW); // shift register clock pin = LOW
-//		GDELAY( DELAY ) ;
 
 		while ( 1 )
 		{
