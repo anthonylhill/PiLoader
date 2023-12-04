@@ -2,6 +2,7 @@
 Raspberry Pi Zero Loader Card for Lee Hart's Membership Card
 ============================================================
 version 1.0   2023/10/20 
+version 3.2   2023/12/04 - improved 1802load executable
 
 
 =============
@@ -15,13 +16,18 @@ version 1.0   2023/10/20
 =============
 - loads a binary file to 1802 memory
 
-usage :   sudo 1802load <filename>    where filename is a binary file to be loaded at 0x0000
+usage :   sudo 1802load filename <load_address> <run_adddress> <switches>
+	
+	- filename is a binary file to be loaded
+	- load_address is an optional hex memory address to load the file.  Default at 0x0000
+	- run_address is an optional jump address to use after the file is loaded.  Default is 0x0000
 
-To Do
------
-1) Add the ability to load at addresses other than 0x0000 ( load address via command line parameter)
-2) Support loading intel hex format files
+	switches are :
+			-h for help
+			-v for verbose output
+			-g to set restart jump address equal to load address if a jump address is no specified
 
+	WARNING : loading overwrites all memory location below the load address with 0x00
 
 
 ===========
