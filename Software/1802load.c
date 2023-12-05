@@ -1,21 +1,24 @@
+
 //***********************************************************
 //
-// 1802 Membership Card Program Loader -   Revision 3.2
+// 1802 Membership Card Program Loader
 //
 //  - for PiLoader4 PCB
 //  - rev 3.2 merged Nick D's mods to support non-zero load and run address
+//    rev 3.5 added -x switch for execute only
 //
 //  Released under terms of the GPL-3.0 license
 //
-//
-// WARNING : loading overwrites all memory location below the load address with 0x00
-//
 //***********************************************************
+
+#define VERSION  3
+#define REVISION 5
 
 // TODO
 // =====
-//   - allow loading from Intel HEX format files 
+//   - support loading from Intel HEX format files 
 //
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,6 +38,10 @@
 // bit mask for byte to GPIO bit I/O
 unsigned char mask[] = { 0x01 , 0x02 , 0x04 , 0x08 , 0x10 , 0x20 , 0x40 , 0x80 } ;
 
+// console output verbose or mostly quiet
+bool verbose = false ;
+bool load_n_go = false ;
+bool execute_only = false ;   
 
 // routine to output a byte to the GPIO lines connected to data bus and initiate a DMA in cycle via EF4
 
@@ -71,9 +78,9 @@ int main( int argc, char *argv[])
    int pin ;
    uint load_addr = 0x0000 ;
    uint exec_addr = 0x0000 ;
-   bool load_n_go = false ;
-   bool verbose = false ;
+    
 
+    printf("\nPi Membership Card Loader %d.%d", VERSION , REVISION ) ;
 
     // scan command line for file name, load address, execute address, and switches
 
@@ -86,13 +93,22 @@ int main( int argc, char *argv[])
 
         if (strcmp(argv[i], "-h") == 0)
         {
-            printf("\nUsage: 1802load -h                  (prints this help)\n");
-            printf("       1802load file                (loads file at 0x0000, runs at 0x0000)\n");
-            printf("       1802load file 4000           (loads file at 0x4000, runs in a loop at 0x0000)\n");
-            printf("       1802load file 4000 4020      (loads file at 0x4000, runs at 0x4020)\n");
-            printf("       add -v to command line for verbose mode\n");
-            printf("       add -g to command line to execute at load address\n\n");
+            printf("\nUsage:\n");
+            printf("    1802load <file>             (loads file at 0x0000, runs at 0x0000)\n");
+            printf("    1802load <file> 4000        (loads file at 0x4000, runs in a loop at 0x0000 unless -g used)\n");
+            printf("    1802load <file> 4000 4020   (loads file at 0x4000, runs at 0x4020)\n");
+            printf("Switches:\n");
+		    printf("      -h prints this help\n");
+            printf("      -v verbose mode\n");
+            printf("      -g execute at load address\n");
+			printf("      -x execute only, no load\n\n");
             exit(1) ;
+        }
+
+        if (strcmp(argv[i], "-x") == 0)
+        {
+            execute_only = true ;
+            continue ;
         }
 
         if (strcmp(argv[i], "-v") == 0)
@@ -114,15 +130,6 @@ int main( int argc, char *argv[])
 
             filename = argv[i]  ;
 
-            // open the binary file to be loaded
-
-            fptr=fopen( filename, "rb" );
-
-            if (!fptr)
-            {
-                printf("\nError : unable to open file %s \n\n", filename );
-                exit(1) ;
-            }
 
             param++ ;
             continue ;
@@ -150,10 +157,24 @@ int main( int argc, char *argv[])
 
     // validate and adjust resulting configuration
 
-    if ( param == 1 )                               // check for a file to load
+    if ( param == 1 )                               // check for a file name to load
     { 
         printf("\nError : filename needed. Use -h for help.\n\n");
 	    exit(1) ;
+    }
+
+    if (( param == 2 ) && ( execute_only == false ))
+    {
+            // open the binary file to be loaded
+
+            fptr=fopen( filename, "rb" );
+
+            if (!fptr)
+            {
+                printf("\nError : unable to open file %s \n\n", filename );
+                exit(1) ;
+            }
+
     }
 
     if ( verbose )
@@ -199,11 +220,11 @@ int main( int argc, char *argv[])
         }
     }
 
-    if (load_n_go)
-    {
-        if ( verbose ) printf("\nAdding jump code to address 0x%4.4x to memory at 0x0000", exec_addr);
+	if ( verbose )
+	{
+		if (load_n_go)    printf("\nAdding jump code to address 0x%4.4x to memory at 0x0000", exec_addr);
+		if (execute_only) printf("\nExecute only mode selected, no program code to be loaded.");
     }
-
 
     // set all pins to output mode, pull ups enabled, state = high
 
@@ -242,6 +263,8 @@ int main( int argc, char *argv[])
 
    // set jump code at 0x0000 and then go to load address ...
 
+	bool jump_loaded = false ;
+	
     if ( load_addr > 0x000 )
     {
         if ( verbose) printf("\nPreloading memory at 0x0000 : ");
@@ -268,12 +291,16 @@ int main( int argc, char *argv[])
                     break ;
                 default :
                     data_byte = 0x00 ;                          // memory fill byte 
+					jump_loaded = true ;
                     break ;
             }
 
             if ( verbose && (jmp_addr < 5)) printf("%2.2X ",data_byte);
-            jmp_addr++ ;
+			
             set_data_pins( data_byte ) ;
+			
+			jmp_addr++ ;
+			if (( execute_only ) &&  ( jump_loaded )) break ;
         }
     }
 
@@ -281,14 +308,16 @@ int main( int argc, char *argv[])
 
     if ( verbose) printf("\nLoading program data at 0x%4.4X : ", load_addr );
 
-    while ( fread(&data_byte,sizeof(data_byte),1,fptr) != 0 )
-    {
-        if ( verbose) printf("%X ",data_byte);
-	    byte_count++ ;
-        set_data_pins( data_byte ) ;
-    }
-    fclose(fptr);
-
+	if ( execute_only == false )
+	{
+		while ( fread(&data_byte,sizeof(data_byte),1,fptr) != 0 )
+		{
+			if ( verbose) printf("%X ",data_byte);
+			byte_count++ ;
+			set_data_pins( data_byte ) ;
+		}
+		fclose(fptr);
+	}
 
   // all done so reset and then execute
 
@@ -299,7 +328,8 @@ int main( int argc, char *argv[])
     gpioWrite( pins[mux_pin], HIGH );    // set mux to override panel switches
 	gpioDelay( DELAY ) ;
 
-    printf("\nProgram %s loaded successfully at 0x%4.4X. Byte count = %d. Restarting 1802 at 0x%4.4X\n\n", filename, load_addr, byte_count, exec_addr);
+    if ( execute_only )  printf("\nNo program loaded. Restarting 1802 at 0x%4.4X\n\n", exec_addr);
+    else                 printf("\nProgram %s loaded successfully at 0x%4.4X. Byte count = %d. Restarting 1802 at 0x%4.4X\n\n", filename, load_addr, byte_count, exec_addr);
 
 // and finally close gpio access to pins
 
