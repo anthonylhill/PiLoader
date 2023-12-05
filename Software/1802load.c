@@ -14,6 +14,8 @@
 #define VERSION  3
 #define REVISION 5
 
+#define DEBUG false
+
 // TODO
 // =====
 //   - support loading from Intel HEX format files 
@@ -56,9 +58,9 @@ void set_data_pins( unsigned char data_byte )
         gpioWrite( pins[pin], value );
     }
     gpioWrite( pins[ef4_pin], LOW );
-    gpioDelay(20) ;
+    gpioDelay(DELAY) ;
     gpioWrite( pins[ef4_pin], HIGH );
-    gpioDelay(20) ;
+    gpioDelay(DELAY) ;
 }
 
 
@@ -163,47 +165,47 @@ int main( int argc, char *argv[])
 	    exit(1) ;
     }
 
-    if (( param == 2 ) && ( execute_only == false ))
+    if ( execute_only == false )                    // don't bother opening the file in execute_only mode 
     {
-            // open the binary file to be loaded
 
-            fptr=fopen( filename, "rb" );
+        fptr=fopen( filename, "rb" );               // open the binary file to be loaded
 
-            if (!fptr)
-            {
-                printf("\nError : unable to open file %s \n\n", filename );
-                exit(1) ;
-            }
+        if (!fptr)
+        {
+            printf("\nError : unable to open file %s \n\n", filename );
+            exit(1) ;
+        }
 
     }
 
     if ( verbose )
     {
-        printf("\nLoading code from file : %s", filename );
+        printf("\n - loading code from file : %s", filename );
 
         if ( param == 2 )                               // check load address
         {
-            printf("\nNo load address specified. Defaulting to 0x0000");
+            printf("\n - no load address specified. Defaulting to 0x0000");
         }
 
         if ( param == 3 )                               // check execute address
         {       
-            printf("\nLoad address set to 0x%4.4X", load_addr);
-            if ( load_n_go ) printf("\nNo execution address specified. Command line switch -g forces run at load address 0x%4.4X.", load_addr ) ;
-            else printf("\nNo execution address specified. Defaulting to loop to self at 0x0000");
+            printf("\n - load address set to 0x%4.4X", load_addr);
+            if (( load_n_go ) || ( execute_only) ) printf("\n - no execution address specified. Command line switch forcing run at load address 0x%4.4X.", load_addr ) ;
+            else printf("\n - no execution address specified. Defaulting to loop to self at 0x0000");
         }
     
         if ( param == 4 )                               // if execution address is specified then make sure load_n_go is enabled
         {
-            printf("\nLoad address set to 0x%4.4X", load_addr);
-            printf("\nExecution address set to 0x%4.4X", exec_addr);
+            printf("\n - load address set to 0x%4.4X", load_addr);
+            printf("\n - execution address set to 0x%4.4X", exec_addr);
         }
         
     }
 
     if (param == 2 ) load_n_go = false ;        // no load address specified so it will default to 0x0000 and load_n_go must be false
 
-    if ((param == 3) && (load_n_go == true ))   // if no execute address was specified but load_n_go was requested set execute address to load address
+    if ((param == 3) && ((load_n_go == true ) || (execute_only)) )   // if no execute address was specified but load_n_go or execute_only were 
+                                                                     //  requested set execute address to load address
     {
         exec_addr = load_addr ;
     }
@@ -222,8 +224,8 @@ int main( int argc, char *argv[])
 
 	if ( verbose )
 	{
-		if (load_n_go)    printf("\nAdding jump code to address 0x%4.4x to memory at 0x0000", exec_addr);
-		if (execute_only) printf("\nExecute only mode selected, no program code to be loaded.");
+		if (load_n_go)    printf("\n - adding jump code to address 0x%4.4x to memory at 0x0000", exec_addr);
+		if (execute_only) printf("\n - execute only mode selected, no program code to be loaded.");
     }
 
     // set all pins to output mode, pull ups enabled, state = high
@@ -236,13 +238,13 @@ int main( int argc, char *argv[])
         exit(1) ;
     }
 
-    if ( verbose ) printf("\nSetting all GPIO pins to output mode, pull ups enabled, state = high");
+    if ( verbose ) printf("\n - setting all GPIO pins to output mode, pull ups enabled, state = high");
     for ( pin=0 ; pin < elements ; pin++ )
     {
 	    gpioSetMode( pins[pin], PI_OUTPUT );                        // set GPIO as output
 	    gpioSetPullUpDown(pins[pin], PI_PUD_UP );                   // set internal resistor to pull up mode
     	gpioWrite( pins[pin], HIGH);                                      // set all pin states high
-        if ( verbose) printf("\n %02d %02d %02d", pins[pin], pin, HIGH);
+        if ( DEBUG ) printf("\n %02d %02d %02d", pins[pin], pin, HIGH);
     }
 
 
@@ -267,7 +269,7 @@ int main( int argc, char *argv[])
 	
     if ( load_addr > 0x000 )
     {
-        if ( verbose) printf("\nPreloading memory at 0x0000 : ");
+        if ( verbose) printf("\n - preloading memory at 0x0000 : ");
         int jmp_addr = 0;
         int i = load_addr ;
         while ( i-- > 0 )
@@ -306,13 +308,24 @@ int main( int argc, char *argv[])
 
    // pump the loaded program code to 1802, toggled in via ef4
 
-    if ( verbose) printf("\nLoading program data at 0x%4.4X : ", load_addr );
 
 	if ( execute_only == false )
 	{
-		while ( fread(&data_byte,sizeof(data_byte),1,fptr) != 0 )
+        if ( verbose) printf("\n - loading program data at 0x%4.4X : ", load_addr );
+
+       int  char_count = 33 ; 
+		
+        while ( fread(&data_byte,sizeof(data_byte),1,fptr) != 0 )
 		{
-			if ( verbose) printf("%X ",data_byte);
+            if ( verbose ) 
+            {   
+                if (++char_count > 31) 
+                {
+                    printf("\n    ");
+                    char_count = 0 ;
+                }
+			    printf("%2.2X ",data_byte);
+            }
 			byte_count++ ;
 			set_data_pins( data_byte ) ;
 		}
