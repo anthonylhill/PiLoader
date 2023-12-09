@@ -9,6 +9,9 @@
 //
 //  Released under terms of the GPL-3.0 license
 //
+//
+// WARNING : loading overwrites all memory location below the load address with 0x00
+//
 //***********************************************************
 
 #define VERSION  3
@@ -100,7 +103,7 @@ int main( int argc, char *argv[])
             printf("    1802load <file> 4000        (loads file at 0x4000, runs in a loop at 0x0000 unless -g used)\n");
             printf("    1802load <file> 4000 4020   (loads file at 0x4000, runs at 0x4020)\n");
             printf("Switches:\n");
-		    printf("      -h prints this help\n");
+            printf("      -h prints this help\n");
             printf("      -v verbose mode\n");
             printf("      -g execute at load address\n");
 			printf("      -x execute only, no load\n\n");
