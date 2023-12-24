@@ -16,6 +16,7 @@
     </tr>
 </table>
 
+Software README.TXT :   https://github.com/anthonylhill/PiLoader/blob/main/Software/README.TXT </br>
 <B>Tags</B> : CDP1802 eclectic retro mishmash fusion retro-futurism anachronism 
 
 
