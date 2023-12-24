@@ -344,14 +344,14 @@ int main( int argc, char *argv[])
         {
             printf("\n - loading code from file : %s", filename );
 
-            if ( param == 2 )                               // check for a  load address
-            {
-                printf("\n - no load or execute address specified. Defaulting to 0x0000");
-            }
-            else printf("\n - load address set to 0x%4.4X", load_addr);
-
             if ( load_only_mode == false )
             {
+				if ( param == 2 )                               // check for a  load address
+				{
+					printf("\n - no load or execute address specified. Defaulting to 0x0000");
+				}
+				else printf("\n - load address set to 0x%4.4X", load_addr);
+				
                 if ( param == 3 )                               // check for an execute address
                 {
                     printf("\n - no execution address specified. Defaulted to run at load address 0x%4.4X.", exec_addr ) ;
@@ -368,7 +368,16 @@ int main( int argc, char *argv[])
                     printf("\n - warning : execution address 0x%4.4X requires overwrite of data loaded at 0x0000 to 0x0005", exec_addr);
                 }
             }
-        }
+			else 
+			{
+				printf("\n - load only mode selected");
+				if ( param == 2 )                               // check for a  load address
+				{
+					printf("\n - no load address specified. Defaulting to 0x0000");
+				}
+				else printf("\n - load address set to 0x%4.4X", load_addr);				
+			}
+		}
 
         if ( confirm_mode == true )
         {
