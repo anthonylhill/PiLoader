@@ -3,7 +3,8 @@ Software for the Raspberry Pi Zero Loader Card for Lee Hart's Membership Card
 =============================================================================
 version 1.0   2023/10/20
 version 3.2   2023/12/04 - improved 1802load executable
-version 3.5   2023/12/05 - addded -x switch to skip load and just execute at load/execute address
+version 3.5   2023/12/05 - added -x switch to skip load and just execute at load/execute address
+version 4.4   2023/12/24 - added -l switch to load code but not execute, and added verbose mode user confirmation
 
 
 =============
@@ -26,6 +27,7 @@ version 3.5   2023/12/05 - addded -x switch to skip load and just execute at loa
     switches are :
             -h for help
             -q for quiet non-verbose output
+            -y default user prompt answers to Yes
             -x execute only, no file loaded
             -l load only, processor stays in HALT mode
             -s stop (halt) only
@@ -42,7 +44,7 @@ version 3.5   2023/12/05 - addded -x switch to skip load and just execute at loa
         - switches can be used anywhere in the command line after 1802load  (space delimited)
         - using the 1802load program to execute code anywhere other than 0x000 overwrites the first 5 bytes of memory at 0x000
         - using the 1802load program to load code anywhere other than 0x000 overwrite the first 15 bytes of memory at 0x000
-        - the -x , -s and -l switches can be used effectively in batch files (Bash scripts) to load multiple files with the 1802 halted
+        - the -y, -x , -s and -l switches can be used effectively in batch files (Bash scripts) to load multiple files with the 1802 halted
 
 ===========
 1802scan

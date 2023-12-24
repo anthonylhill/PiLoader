@@ -8,14 +8,14 @@
 //  - rev 3.5 added -x switch for execute only
 //  - rev 4 added helper code so that program loads withoug overwriting memory below it
 //  - rev 4.3 added additional command line switches for "load only",  "reset & run only" and "halt only"
+//  - rev 4.4 added user confirmation with command line switch disable ( -y )  and more input validation
 //
 //  Released under terms of the GPL-3.0 license
-//
 //
 //***********************************************************
 
 #define VERSION  4
-#define REVISION 3
+#define REVISION 4
 
 #define DEBUG false
 
@@ -51,8 +51,9 @@ unsigned char mask[] = { 0x01 , 0x02 , 0x04 , 0x08 , 0x10 , 0x20 , 0x40 , 0x80 }
 // command line switch selected modes
 
 bool verbose_mode = true ;        // console output verbose or mostly quiet ?
-bool execute_only_mode = false ;     // no file load, run at 0x0000 ir the specified execution address
-bool load_only_mode = false ;        // load binary file but leave processor in RESET mode  (no helper code added at 0x0000 )
+bool execute_only_mode = false ;  // no file load, run at 0x0000 ir the specified execution address
+bool load_only_mode = false ;     // load binary file but leave processor in RESET mode  (no helper code added at 0x0000 )
+bool confirm_mode = true ;        // check for user confirmation to proceed after verbose mode give the actions that will happen
 
 // partially initialized data buffers for assembled code to be sent via DMA to the 1802 - note that code writes address info into these at runtime
 
@@ -112,12 +113,12 @@ void dma_transfer( char * bptr , int length )
 }
 
 
-// routine to setup the GPIO pins 
+// routine to setup the GPIO pins
 
 void set_GPIOs()
 {
-	 int pin ;
-		
+     int pin ;
+
     // set all pins to output mode, pull ups enabled, state = high
 
     int elements = sizeof(pins)/sizeof(pins[0]) ;
@@ -148,22 +149,24 @@ void set_GPIOs()
 
 void set_1802_halt()
 {
-	set_GPIOs() ;
+    set_GPIOs() ;
     set_gpio( clear_pin, LOW,  PIN_DELAY);
     set_gpio( wait_pin,  HIGH, PIN_DELAY);
     set_gpio( mux_pin, LOW, PIN_DELAY);      // set MUX pin state low to override front panel switches
     set_gpio( wait_pin, LOW, PIN_DELAY);  // set wait pin state low to reset 1802
 }
 
-// routine to valid a hex input
+// routine to valid a 1 to 4 digit hex input
 
 int validate_hex(const char* hex){
-	while(*hex != 0)
-	{
-		if( isxdigit(*hex) == false ) return 0;
-		hex++ ;
-	}
-	return 1;
+    int count = 0 ;
+    while(*hex != 0)
+    {
+        if( isxdigit(*hex) == false ) return 0;
+        if ( ++count > 4 ) return 0 ;
+        hex++ ;
+    }
+    return 1;
 }
 //=================================================================================================
 //
@@ -202,7 +205,8 @@ int main( int argc, char *argv[])
             printf("                          - default = <load address> if not given\n\n");
             printf("  switches:\n");
             printf("       -h prints this help\n");
-            printf("       -q quiet mode - verbose output disabled\n");
+            printf("       -q quiet mode, verbose output disabled\n");
+            printf("       -y confirm mode, defaults user answers to Yes\n");
             printf("       -x execute only, no file loaded\n");
             printf("       -l load only, processor stays in RESET mode\n");
             printf("       -s stop (halt) only\n\n");
@@ -214,7 +218,7 @@ int main( int argc, char *argv[])
             printf("        1802load -x 4030            - no file loaded, runs at 0x4030 via LBR at 0x0000\n");
             printf("        1802load -s                 - no file loaded, processor halted\n\n");
             printf("  warning : first 5 to 15 memory bytes overwritten when using non-zero load or execute address\n\n");
-            exit(1) ;
+            exit(0) ;
         }
 
 
@@ -224,12 +228,18 @@ int main( int argc, char *argv[])
             continue ;
         }
 
+        if (strcmp(argv[i], "-y") == 0)
+        {
+            confirm_mode = false ;
+            continue ;
+        }
+
         if (strcmp(argv[i], "-s") == 0)         // put processor into RESET mode at specified address without loading any binary data from file
         {
-			verbose_mode = false ;
+            verbose_mode = false ;
             printf("\nnSetting 1802 to RESET state.  No binary file loaded\n\n");
             set_1802_halt() ;
-            exit(1) ;
+            exit(0) ;
         }
 
         if (strcmp(argv[i], "-x") == 0)         // put processor into RUN mode at specified address without loading any binary data from file
@@ -255,12 +265,12 @@ int main( int argc, char *argv[])
         // check for a load address (overrides default load at 0x0000 )
         if ( param == 2 )
         {
-			if  ( validate_hex(argv[i]) == 1 ) load_addr = strtol(argv[i], &endptr, 16);
-			else
-			{
-				printf("\n\nError : non-numeric load address\n\n");
-				exit(1) ;
-			}
+            if  ( validate_hex(argv[i]) == 1 ) load_addr = strtol(argv[i], &endptr, 16);
+            else
+            {
+                printf("\n\nError : invalid load address\n\n");
+                exit(1) ;
+            }
             param++ ;
             continue ;
         }
@@ -268,23 +278,23 @@ int main( int argc, char *argv[])
         // check for an execution address (overrides start at load address)
         if ( param == 3 )
         {
-			if  ( validate_hex(argv[i]) == 1 ) exec_addr = strtol(argv[i], &endptr, 16);
-			else
-			{
-				printf("\n\nError : non-numeric execute address\n\n");
-				exit(1) ;
-			}			
+            if  ( validate_hex(argv[i]) == 1 ) exec_addr = strtol(argv[i], &endptr, 16);
+            else
+            {
+                printf("\n\nError : invalid execute address\n\n");
+                exit(1) ;
+            }
             param++ ;
             continue ;
         }
     }
 
-    // validate and adjust resulting configuration
+    // validate resulting configuration
 
-	if ( param != 4 )                                   // execute address = load address if not specified
-	{
-		exec_addr = load_addr;	
-	}
+    if ( param != 4 )                                   // execute address = load address if not specified
+    {
+        exec_addr = load_addr;
+    }
 
     if (( load_only_mode == true) && ( execute_only_mode == true ))
     {
@@ -294,14 +304,14 @@ int main( int argc, char *argv[])
 
     if ( execute_only_mode == true )                        // don't bother opening a file in execute_only_mode
     {
-        if ( param == 2 )                                   // load address is in filename buffer  ? 
+        if ( param == 2 )                                   // load address is in filename buffer  ?
         {
-			if  ( validate_hex(filename) == 1 ) exec_addr = strtol(filename, &endptr, 16);
-			else
-			{
-				printf("\nError : non-numeric execute address\n\n");
-				exit(1) ;
-			}				
+            if  ( validate_hex(filename) == 1 ) exec_addr = strtol(filename, &endptr, 16);
+            else
+            {
+                printf("\nError : invalid execute address\n\n");
+                exit(1) ;
+            }
         }
 
     }
@@ -340,33 +350,46 @@ int main( int argc, char *argv[])
             }
             else printf("\n - load address set to 0x%4.4X", load_addr);
 
-			if ( load_only_mode == false )
-			{
-				if ( param == 3 )                               // check for an execute address
-				{
-					printf("\n - no execution address specified. Defaulted to run at load address 0x%4.4X.", exec_addr ) ;
-				}
+            if ( load_only_mode == false )
+            {
+                if ( param == 3 )                               // check for an execute address
+                {
+                    printf("\n - no execution address specified. Defaulted to run at load address 0x%4.4X.", exec_addr ) ;
+                }
 
-				if ( param == 4 )                               // if execution address is specified then make sure M_load_n_go is enabled
-				{
-					printf("\n - execution address set to 0x%4.4X", exec_addr);
-					printf("\n - adding jump code to address 0x%4.4x to memory at 0x0000", exec_addr);
-				}
-				
-				if (( load_addr == 0 ) && ( exec_addr != 0 ))
-				{
-					printf("\n - warning : execution address 0x%4.4X requires overwrite of data loaded at 0x0000 to 0x0005", exec_addr);				
-				}
+                if ( param == 4 )                               // if execution address is specified then make sure M_load_n_go is enabled
+                {
+                    printf("\n - execution address set to 0x%4.4X", exec_addr);
+                    printf("\n - adding jump code to address 0x%4.4x to memory at 0x0000", exec_addr);
+                }
+
+                if (( load_addr == 0 ) && ( exec_addr != 0 ))
+                {
+                    printf("\n - warning : execution address 0x%4.4X requires overwrite of data loaded at 0x0000 to 0x0005", exec_addr);
+                }
+            }
+        }
+
+        if ( confirm_mode == true )
+        {
+            char choice = 'n' ;
+            printf("\n\nWould you like to continue? (Y/n): ");	
+			scanf("%c",&choice) ;
+            if ( (choice != 'y' ) && (choice != 'Y') && (choice != 0x0A) && (choice != 0x0D) ) 
+			{
+				printf("\n") ;
+				exit(0) ;
 			}
         }
+
     }
 
 
     /**************************************************************/
     /** Configure Raspberry Pi GPIO interface to Membership Card **/
     /**************************************************************/
-	
-	set_GPIOs() ;
+
+    set_GPIOs() ;
 
    // preset CLEAR and LOAD pins prior to using mux to override panel switches so that 1802 is put into RESET state
 
@@ -442,14 +465,14 @@ int main( int argc, char *argv[])
     {
        // load the jump address for the code we just loaded
 
-		if ( exec_addr > 0 )
-		{
-			if ( verbose_mode ) printf("\n - postloading jump code at 0x0000 : ");
-			jump_buffer[3] = exec_addr >> 8 ;
-			jump_buffer[4] = exec_addr & 0x00FF ;
-			dma_transfer( jump_buffer , (sizeof(jump_buffer)/sizeof(jump_buffer[0]))) ;
-			if ( verbose_mode ) printf("\n - running postloaded jump code. ");
-		}
+        if ( exec_addr > 0 )
+        {
+            if ( verbose_mode ) printf("\n - postloading jump code at 0x0000 : ");
+            jump_buffer[3] = exec_addr >> 8 ;
+            jump_buffer[4] = exec_addr & 0x00FF ;
+            dma_transfer( jump_buffer , (sizeof(jump_buffer)/sizeof(jump_buffer[0]))) ;
+            if ( verbose_mode ) printf("\n - running postloaded jump code. ");
+        }
 
       // all done so reset and then execute
 
@@ -468,5 +491,7 @@ int main( int argc, char *argv[])
     // and finally close gpio access to pins
 
     gpioTerminate();
+	
+	exit(0) ;
 
 }
