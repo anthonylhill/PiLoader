@@ -346,12 +346,12 @@ int main( int argc, char *argv[])
 
             if ( load_only_mode == false )
             {
-				if ( param == 2 )                               // check for a  load address
-				{
-					printf("\n - no load or execute address specified. Defaulting to 0x0000");
-				}
-				else printf("\n - load address set to 0x%4.4X", load_addr);
-				
+                if ( param == 2 )                               // check for a  load address
+                {
+                    printf("\n - no load or execute address specified. Defaulting to 0x0000");
+                }
+                else printf("\n - load address set to 0x%4.4X", load_addr);
+
                 if ( param == 3 )                               // check for an execute address
                 {
                     printf("\n - no execution address specified. Defaulted to run at load address 0x%4.4X.", exec_addr ) ;
@@ -360,7 +360,7 @@ int main( int argc, char *argv[])
                 if ( param == 4 )                               // if execution address is specified then make sure M_load_n_go is enabled
                 {
                     printf("\n - execution address set to 0x%4.4X", exec_addr);
-                    printf("\n - adding jump code to address 0x%4.4x to memory at 0x0000", exec_addr);
+                    printf("\n - adding jump code to address 0x%4.4X to memory at 0x0000", exec_addr);
                 }
 
                 if (( load_addr == 0 ) && ( exec_addr != 0 ))
@@ -368,27 +368,27 @@ int main( int argc, char *argv[])
                     printf("\n - warning : execution address 0x%4.4X requires overwrite of data loaded at 0x0000 to 0x0005", exec_addr);
                 }
             }
-			else 
-			{
-				printf("\n - load only mode selected");
-				if ( param == 2 )                               // check for a  load address
-				{
-					printf("\n - no load address specified. Defaulting to 0x0000");
-				}
-				else printf("\n - load address set to 0x%4.4X", load_addr);				
-			}
-		}
+            else
+            {
+                printf("\n - load only mode selected");
+                if ( param == 2 )                               // check for a  load address
+                {
+                    printf("\n - no load address specified. Defaulting to 0x0000");
+                }
+                else printf("\n - load address set to 0x%4.4X", load_addr);
+            }
+        }
 
         if ( confirm_mode == true )
         {
             char choice = 'n' ;
-            printf("\n\nWould you like to continue? (Y/n): ");	
-			scanf("%c",&choice) ;
-            if ( (choice != 'y' ) && (choice != 'Y') && (choice != 0x0A) && (choice != 0x0D) ) 
-			{
-				printf("\n") ;
-				exit(0) ;
-			}
+            printf("\n\nWould you like to continue? (Y/n): ");
+            scanf("%c",&choice) ;
+            if ( (choice != 'y' ) && (choice != 'Y') && (choice != 0x0A) && (choice != 0x0D) )
+            {
+                printf("\n") ;
+                exit(0) ;
+            }
         }
 
     }
@@ -500,7 +500,7 @@ int main( int argc, char *argv[])
     // and finally close gpio access to pins
 
     gpioTerminate();
-	
-	exit(0) ;
+
+    exit(0) ;
 
 }
