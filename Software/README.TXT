@@ -1,64 +1,73 @@
-
-Raspberry Pi Zero Loader Card for Lee Hart's Membership Card
-============================================================
+=============================================================================
+Software for the Raspberry Pi Zero Loader Card for Lee Hart's Membership Card
+=============================================================================
 version 1.0   2023/10/20
 version 3.2   2023/12/04 - improved 1802load executable
 version 3.5   2023/12/05 - addded -x switch to skip load and just execute at load/execute address
 
 
-
 =============
  makefile
 =============
-	- standard make file for building Loader C and 1802 Assembler files
+    - standard make file for building Loader C and 1802 Assembler files
 
 
 =============
  1802load
 =============
-	- loads a binary file to 1802 memory
+     - loads a binary file to 1802 memory
 
-	usage :   sudo 1802load filename <load_address> <execute_adddress> <switches>
+    usage :   sudo 1802load filename [switches] <file name> <load_address> <execute_address>
 
     - filename is a binary file to be loaded
     - load_address is an optional hex memory address to load the file.  Default at 0x0000
-    - execture_address is an optional run address to use after the file is loaded.  Default is 0x0000
+    - execute_address is an optional hex run address to use after the file is loaded.  Default is the load address
 
     switches are :
             -h for help
-            -v for verbose output
-            -g to set restart jump address equal to load address if a jump address is no specified
-            -x execute at load/run address without loading program code from file
+            -q for quiet non-verbose output
+            -x execute only, no file loaded
+            -l load only, processor stays in HALT mode
+            -s stop (halt) only
+
+    examples:
+    1802load <file>             - loads file at 0x0000, runs at 0x0000
+    1802load <file> 4000        - loads file at 0x4000, runs at 0x4000
+    1802load <file> 4000 4020   - loads file at 0x4000, runs at 0x4020
+    1802load -l <file> 4000     - loads file at 0x4000, processor left halted
+    1802load -x 4030            - no file loaded, runs at 0x4030 via LBR at 0x0000
+    1802load -s                 - no file loaded, processor halted
 
     NOTES & WARNINGS :
         - switches can be used anywhere in the command line after 1802load  (space delimited)
         - using the 1802load program to execute code anywhere other than 0x000 overwrites the first 5 bytes of memory at 0x000
         - using the 1802load program to load code anywhere other than 0x000 overwrite the first 15 bytes of memory at 0x000
+        - the -x , -s and -l switches can be used effectively in batch files (Bash scripts) to load multiple files with the 1802 halted
 
 ===========
 1802scan
 ===========
-	- scans the front panel LED display port and reports on changes
+    - scans the front panel LED display port and reports on changes
 
-	usage :   sudo 1802scan
+    usage :   sudo 1802scan
 
 
 
 ===========
 gpio_get
 ===========
-	- reads status of gpio pin connected to membership card interface connector
-	- useful for hardware testing
+    - reads status of gpio pin connected to membership card interface connector
+    - useful for hardware testing
 
-	usage :   sudo gpio_get <pin_name>  - where pin_name is one of [ mux wait clear ef4 d0 d1 d2 d3 d4 d5 d6 d7 ]
+    usage :   sudo gpio_get <pin_name>  - where pin_name is one of [ mux wait clear ef4 d0 d1 d2 d3 d4 d5 d6 d7 ]
 
 ===========
 gpio_set
 ===========
-	- set state of gpio pin connected to membership card interface connector
-	- useful for hardware testing
+    - set state of gpio pin connected to membership card interface connector
+    - useful for hardware testing
 
-	usage :   sudo gpio_set <pin_name> <0/1>   - where pin_name is one of [ mux wait clear ef4 d0 d1 d2 d3 d4 d5 d6 d7 ]
+    usage :   sudo gpio_set <pin_name> <0/1>   - where pin_name is one of [ mux wait clear ef4 d0 d1 d2 d3 d4 d5 d6 d7 ]
 
 
 ====================================================

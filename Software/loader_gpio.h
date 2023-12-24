@@ -1,6 +1,7 @@
 
 /// 1802 Program Loader GPIO Pin Assignments
 //  - include file for PiLoader 4 PCB
+//  - update for 1802load.c release 4.3 and higher
 
 
 #define data0  20 
@@ -25,14 +26,14 @@
 #define shift_register_load   27
 #define shift_register_clock  22
 
-// Note : data pin 0 to 7 must be first and don't touch ef3
+// Note : data pin 0 to 7 must be first and don't use ef3
 
-int pins[] = { data0, data1, data2, data3, data4, data5, data6, data7, wait, clear, interrupt, ef4, mux } ;
+int pins[] = { data0, data1, data2, data3, data4, data5, data6, data7, interrupt, ef4, wait, clear, mux } ;
 
 // index in pins[] array of control pins
 
-#define wait_pin       8
-#define clear_pin      9
-#define interrupt_pin 10
-#define ef4_pin       11
+#define interrupt_pin  8
+#define ef4_pin        9
+#define wait_pin      10
+#define clear_pin     11
 #define mux_pin       12
