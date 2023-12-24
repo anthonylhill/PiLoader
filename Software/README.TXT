@@ -76,7 +76,7 @@ gpio_set
 Assorted 1802 Membership Card Demo and Test Programs
 ====================================================
 
-1802_bit_bang_serial.asm  - routines to bit bang serial I/O at 9600 baud or 19200 baud for 1.8Mhz or 4 MHz Membership Cards
+bit_bang_serial.asm  - routines to bit bang serial I/O at 9600 baud or 19200 baud for 1.8Mhz or 4 MHz Membership Cards
 6digitDisplay.asm  - demo program for latest Membership Card front panel 6 x 7 digit LED display
 demo.asm   - demo program to scroll the 8 front panel LED's
 idle.asm    - demo program to slow blink the Q LED
