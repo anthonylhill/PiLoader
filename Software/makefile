@@ -32,8 +32,8 @@ qblink:  qblink.asm
 idle:  idle.asm
 	./a18/a18 idle.asm -L idle.lst -b idle
 
-bbserial:  1802_bit_bang_serial.asm
-	./a18/a18 1802_bit_bang_serial.asm -L 1802_bit_bang_serial.lst -b bbserial
+bbserial:  bit_bang_serial.asm
+	./a18/a18 bit_bang_serial.asm -L bit_bang_serial.lst -b bbserial
 
 serial_test:  serial_test.asm
 	./a18/a18 serial_test.asm -L serial_test.lst -b serial_test
