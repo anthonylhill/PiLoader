@@ -12893,10 +12893,18 @@
     (effects (font (size 2 2) (thickness 0.4) bold (color 255 0 0 1)) (justify left bottom))
     (uuid 0905cb2a-99eb-4858-8cbe-8270fe69771d)
   )
+  (text "caution : do not install JP1" (at 181.61 163.83 0)
+    (effects (font (size 1.27 1.27) (thickness 0.254) bold italic (color 255 0 0 1)) (justify left bottom))
+    (uuid 16356c21-cbb3-4832-836e-0382ba5145c6)
+  )
   (text "GND\nOUT0\nOUT1\nOUT2\nOUT3\nOUT4\nOUT5\nOUT6\nOUT7\n/WE\n/MWR\nQ\nRUN\n+5V\nIN7\nIN6\nIN5\nIN4\nIN3\nIN2\nIN1\nIN0\n/INT\n/EF1\n/EF2\n/EF3\n/EF4\n/CLEAR\n/WAIT\nGND\n"
     (at 258.1233 132.3964 0)
     (effects (font (size 1.58 1.58)) (justify left bottom))
     (uuid 5761f97f-83a8-4b5a-b7eb-8c36733d7daa)
+  )
+  (text "Project Website :  http://anthonylhill.github.io" (at 161.29 186.69 0)
+    (effects (font (face "Lucida Console") (size 2 2) (thickness 0.254) bold (color 205 0 0 1)) (justify left bottom))
+    (uuid 63b753d7-c5d3-488f-9b26-4503cdb199b4)
   )
   (text "Note : GPIO5 as the MUX  - the first 8 GPIOas default to \npullup resistors instead of pull down. That will means the \nmux state lets the 1802 run on powerup."
     (at 161.29 177.8 0)
