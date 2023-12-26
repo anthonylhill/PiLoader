@@ -6,8 +6,8 @@
 
   (title_block
     (title "PiZero 1802 Membership Card Loader")
-    (date "2023-05-18")
-    (rev "4c")
+    (date "2023-12-26")
+    (rev "4d")
   )
 
   (lib_symbols
@@ -12893,7 +12893,8 @@
     (effects (font (size 2 2) (thickness 0.4) bold (color 255 0 0 1)) (justify left bottom))
     (uuid 0905cb2a-99eb-4858-8cbe-8270fe69771d)
   )
-  (text "caution : do not install JP1" (at 181.61 163.83 0)
+  (text "Caution : install JP1 & JP2 only when using the \nMC CPU card stand-alone (i.e. no front panel card)."
+    (at 182.88 166.37 0)
     (effects (font (size 1.27 1.27) (thickness 0.254) bold italic (color 255 0 0 1)) (justify left bottom))
     (uuid 16356c21-cbb3-4832-836e-0382ba5145c6)
   )
